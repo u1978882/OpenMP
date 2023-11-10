@@ -26,11 +26,11 @@ void printMatriu(int *matriu, int tamany){
 
 int main(int argc, char *argv[]) {
 
-    int tamanyMatriu = 30000;
+    int tamanyMatriu = 100;
+    if (argc >= 2) tamanyMatriu = atoi(argv[1]);
+
     int *matriuA = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
-    omplirMatriu(matriuA, tamanyMatriu);
     int *matriuB = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
-    omplirMatriu(matriuB, tamanyMatriu);
     int *matriuC = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
 
     if (matriuA == NULL || matriuB == NULL || matriuC == NULL) {
@@ -40,6 +40,10 @@ int main(int argc, char *argv[]) {
         free(matriuC);
         return 0;
     }
+    
+    omplirMatriu(matriuB, tamanyMatriu);
+    omplirMatriu(matriuA, tamanyMatriu);
+
   	
     clock_t clock_inicial = clock();
 
