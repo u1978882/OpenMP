@@ -1,10 +1,15 @@
 #!/bin/bash
 gcc -fopenmp -o codi $1
-echo "Executant" $1 "-" $3 "iteracions"
-avg=0
+echo "---------------------------------------------------------"
+echo "| Executant" $1 "-" $3 "iteracions |"
+echo "---------------------------------------------------------"
+avg=0;
 for (( c=1; c<=$3; c++ ))
 do
-  avg=$(echo "$avg + $(./codi $2)" | bc -ql)
+  res=$(./codi $2)
+  echo $res
+  avg=$(echo "$avg + $res" | bc -ql)
 done
 rm codi
-echo $(echo "$avg / $3" | bc -ql );
+echo "Avg:" $(echo "$avg / $3" | bc -ql );
+echo "---------------------------------------------------------"
