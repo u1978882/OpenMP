@@ -1,0 +1,10 @@
+#!/bin/bash
+cd pi
+./run $1
+cd ..
+cd sumaSequencial
+./run $1
+cd ..
+cd sumaParalel
+./run $1
+cd ..

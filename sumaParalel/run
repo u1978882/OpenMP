@@ -1,0 +1,7 @@
+#!/bin/bash
+gcc -fopenmp -o codi sumaMatriusSequencial.c
+echo "Suma paralel"
+for i in {1..1}
+do
+  ./codi
+done
