@@ -3,13 +3,9 @@ gcc -fopenmp -o codi $1
 echo "---------------------------------------------------------"
 echo "| Executant" $1 "-" $3 "iteracions |"
 echo "---------------------------------------------------------"
-avg=0;
 for (( c=1; c<=$3; c++ ))
 do
-  res=$(./codi $2)
-  echo $res
-  avg=$(echo "$avg + $res" | bc -ql)
+  echo $(./codi $2)
 done
 rm codi
-echo "Avg:" $(echo "$avg / $3" | bc -ql );
 echo "---------------------------------------------------------"

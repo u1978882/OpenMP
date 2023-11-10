@@ -1,5 +1,0 @@
-#!/bin/bash
-for file in $(ls *.c)
-do
-    ./run $(echo $file $1 $2)
-done
