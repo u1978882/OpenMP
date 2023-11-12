@@ -7,8 +7,10 @@
 
 
 void omplirMatriu(int *matriu, int tamany){
-    for (long i = 0; i < tamany; i++)
-        for (long j = 0; j < tamany; j++)
+    long i, j;
+    #pragma omp parallel for private(i,j) shared(matriu)
+    for (i = 0; i < tamany; i++)
+        for (j = 0; j < tamany; j++)
             *((matriu+(i*(long)tamany)) + j) = 2;//rand() % 100;
 }
 

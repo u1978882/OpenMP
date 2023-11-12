@@ -10,12 +10,8 @@ void omplirMatriu(int *matriu, int tamany){
     long i, j;
     #pragma omp parallel for private(i,j) shared(matriu)
     for (i = 0; i < tamany; i++)
-    {
         for (j = 0; j < tamany; j++)
-        {
             *((matriu+(i*(long)tamany)) + j) = 2;//rand() % 100;
-        }
-    }
 }
 
 void printMatriu(int *matriu, int tamany){
@@ -23,7 +19,7 @@ void printMatriu(int *matriu, int tamany){
     {
         for (long j = 0; j < tamany; j++)
         {
-            printf("%3i ",  *((matriu+i*tamany) + j));
+            printf("%5i ",  *((matriu+i*tamany) + j));
         }
         printf("\n");
     }
@@ -36,9 +32,7 @@ int main(int argc, char *argv[]) {
     if (argc >= 2) tamanyMatriu = atoi(argv[1]);
 
     int *matriuA = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
-    omplirMatriu(matriuA, tamanyMatriu);
     int *matriuB = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
-    omplirMatriu(matriuB, tamanyMatriu);
     int *matriuC = malloc(sizeof(int) * tamanyMatriu * tamanyMatriu);
 
     if (matriuA == NULL || matriuB == NULL || matriuC == NULL) {
@@ -48,18 +42,27 @@ int main(int argc, char *argv[]) {
         free(matriuC);
         return 0;
     }
-  	
-    omp_set_num_threads(omp_get_num_procs());
+    
+    omplirMatriu(matriuB, tamanyMatriu);
+    omplirMatriu(matriuA, tamanyMatriu);
+
+  	omp_set_num_threads(omp_get_num_procs());
 
     double timeI, timeF, temps;
     timeI = omp_get_wtime();
 
-    // Suma matriu
-    long max = tamanyMatriu * tamanyMatriu;
-    #pragma omp parallel for if(mida >= 500)
-    for (long i = 0; i < max; i++)
+    // Multiplicacio matriu
+    #pragma omp parallel for schedule(static, 50)
+    for (long i = 0; i < tamanyMatriu; i++)
     {
-        *(matriuC+i) = *(matriuA+i) + *(matriuB+i);
+        for (long j = 0; j < tamanyMatriu; j++)
+        {
+            *((matriuC+i*tamanyMatriu) + j) = 0;
+            for (long k = 0; k < tamanyMatriu; k++)
+            {
+                *((matriuC+i*tamanyMatriu) + j) += *((matriuA+i*tamanyMatriu) + k) * *((matriuB+k*tamanyMatriu) + j);
+            }
+        }
     }
     
     timeF = omp_get_wtime();
