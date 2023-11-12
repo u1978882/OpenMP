@@ -13,7 +13,7 @@ void omplirMatriu(int *matriu, int tamany){
     {
         for (j = 0; j < tamany; j++)
         {
-            *((matriu+(i*(long)tamany)) + j) = rand() % 100;
+            *((matriu+(i*(long)tamany)) + j) = 2;//rand() % 100;
         }
     }
 }
@@ -55,10 +55,9 @@ int main(int argc, char *argv[]) {
     timeI = omp_get_wtime();
 
     // Suma matriu
-    long i, j;
     long max = tamanyMatriu * tamanyMatriu;
-    #pragma omp parallel for private(i,j) shared(matriuA,matriuB,matriuC)
-    for (i = 0; i < max; i++)
+    #pragma omp parallel for if(mida >= 500)
+    for (long i = 0; i < max; i++)
     {
         *(matriuC+i) = *(matriuA+i) + *(matriuB+i);
     }

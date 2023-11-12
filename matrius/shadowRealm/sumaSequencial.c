@@ -7,9 +7,15 @@
 
 
 void omplirMatriu(int *matriu, int tamany){
-    for (long i = 0; i < tamany; i++)
-        for (long j = 0; j < tamany; j++)
+    long i, j;
+    #pragma omp parallel for private(i,j) shared(matriu)
+    for (i = 0; i < tamany; i++)
+    {
+        for (j = 0; j < tamany; j++)
+        {
             *((matriu+(i*(long)tamany)) + j) = 2;//rand() % 100;
+        }
+    }
 }
 
 void printMatriu(int *matriu, int tamany){
@@ -17,7 +23,7 @@ void printMatriu(int *matriu, int tamany){
     {
         for (long j = 0; j < tamany; j++)
         {
-            printf("%5i ",  *((matriu+i*tamany) + j));
+            printf("%3i ",  *((matriu+i*tamany) + j));
         }
         printf("\n");
     }
@@ -47,21 +53,14 @@ int main(int argc, char *argv[]) {
   	
     clock_t clock_inicial = clock();
 
-    // Multiplicacio matriu
-    for (long i = 0; i < tamanyMatriu; i++)
-    {
-        for (long j = 0; j < tamanyMatriu; j++)
-        {
-            *((matriuC+i*tamanyMatriu) + j) = 0;
-            for (long k = 0; k < tamanyMatriu; k++)
-            {
-                *((matriuC+i*tamanyMatriu) + j) += *((matriuA+i*tamanyMatriu) + k) * *((matriuB+k*tamanyMatriu) + j);
-            }
-        }
-    }
-    
+    // Suma matriu
+    long max = tamanyMatriu * tamanyMatriu;
+    for (long i = 0; i < max; i++)
+        *(matriuC+i) = *(matriuA+i) + *(matriuB+i);
+
+
     clock_t clock_final = clock();
-    printf("%f\n",(double)(clock_final - clock_inicial) / CLOCKS_PER_SEC);
+    printf("%.6f\n",(double)(clock_final - clock_inicial) / CLOCKS_PER_SEC);
     
     //printf("--- Matriu A ---\n");
     //printMatriu(matriuA, tamanyMatriu);
