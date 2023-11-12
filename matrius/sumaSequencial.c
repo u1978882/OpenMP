@@ -54,10 +54,11 @@ int main(int argc, char *argv[]) {
     clock_t clock_inicial = clock();
 
     // Suma matriu
-    for (long i = 0; i < tamanyMatriu; i++)
-        for (long j = 0; j < tamanyMatriu; j++)
-            *((matriuC+i*tamanyMatriu) + j) = *((matriuA+i*tamanyMatriu) + j) + *((matriuB+i*tamanyMatriu) + j);
-    
+    long max = tamanyMatriu * tamanyMatriu;
+    for (long i = 0; i < max; i++)
+        *(matriuC+i) = *(matriuA+i) + *(matriuB+i);
+
+
     clock_t clock_final = clock();
     printf("%.6f\n",(double)(clock_final - clock_inicial) / CLOCKS_PER_SEC);
     

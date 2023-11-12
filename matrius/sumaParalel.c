@@ -56,12 +56,11 @@ int main(int argc, char *argv[]) {
 
     // Suma matriu
     long i, j;
+    long max = tamanyMatriu * tamanyMatriu;
     #pragma omp parallel for private(i,j) shared(matriuA,matriuB,matriuC)
-    for (i = 0; i < tamanyMatriu; i++)
+    for (i = 0; i < max; i++)
     {
-        for (j = 0; j < tamanyMatriu; j++){
-            *((matriuC+i*tamanyMatriu) + j) = *((matriuA+i*tamanyMatriu) + j) + *((matriuB+i*tamanyMatriu) + j);
-        }
+        *(matriuC+i) = *(matriuA+i) + *(matriuB+i);
     }
     
     timeF = omp_get_wtime();
